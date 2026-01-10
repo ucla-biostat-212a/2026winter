@@ -32,7 +32,7 @@ subtitle: Statistical Learning A
 Office: CHS 21-254  
 Email: <jinjinzhou@ucla.edu>  
 Office hours: 
-  Tuesday after class, i.e., 7:30-8:30 pm, or if there is no class on Tuesday, 5 - 6 pm via lectures Zoom.
+  Tuesday after class, i.e., 7:30-8:30 pm, or if there is no class on Tuesday, 5 - 6 pm via lecture's Zoom.
 
 ## TA  
 
@@ -48,7 +48,7 @@ Office hours:
   + Email: <aeyfang@g.ucla.edu>
   + Schedule: Flexible  
   
-- All TA sessions will be held **via lecture Zoom**. 
+- All TA sessions will be held **via lecture's Zoom**. 
 
 
 ## Course Description
