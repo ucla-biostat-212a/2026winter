@@ -38,15 +38,15 @@ Office hours:
 
 - James Papadopoulos
    + Email: <jmpapadopoulos@ucla.edu>
-   + Schedule: **TBD**
+   + Schedule: 8:00 - 9:30 PM on Mondays and Wednesdays
 
 - Yingxing Zhang
   + Email: <yingxinzz@ucla.edu>
-  + Schedule: **TBD**
+  + Schedule: 5 - 8 pm on Fridays
   
 - Antoinette Fang
   + Email: <aeyfang@g.ucla.edu>
-  + Schedule: **TBD**
+  + Schedule: Flexible  
   
 - All TA sessions will be held **via lecture Zoom**. 
 
