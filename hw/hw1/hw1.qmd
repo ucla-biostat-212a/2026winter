@@ -1,6 +1,6 @@
 ---
 title: "Biostat 212a Homework 1"
-subtitle: "Due Jan 23, 2026 @ 11:59PM"
+subtitle: "Due Jan 25, 2026 @ 11:59PM"
 author: "YOUR NAME and UID"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 format:
