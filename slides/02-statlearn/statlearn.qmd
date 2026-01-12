@@ -375,7 +375,11 @@ Bias-variance trade-off.
 
 - Above U-shaped test MSE curves are in the so-called **classical regime** where the number of features (or the degree of freedom) is less than the training samples. 
 
-    In the **modern regime**, where the number of features (or the degree of freedom) can be order of magnitude larger than the training samples (recall that ChatGPT3 model has 175 billion parameters!), the **double descent** phenomenon is observed and being actively studied. See the recent [paper](https://epubs.siam.org/doi/pdf/10.1137/20M1336072) and references therein.
+    In the **modern regime**, where the number of features (or the degree of freedom) can be order of magnitude larger than the training samples (recall that ChatGPT3 model has 175 billion parameters!), the **double descent** phenomenon is observed and being actively studied. See 
+    - [paper](https://epubs.siam.org/doi/pdf/10.1137/20M1336072)  
+    - [Linear regression with minimum-norm interpolators](https://hastie.su.domains/Papers/21-AOS2133.pdf)
+    - [Benign overfitting in linear regression](https://www.pnas.org/doi/10.1073/pnas.1907378117)
+    - [Double descent: Where bigger models and more data hurt](https://openreview.net/forum?id=B1g5sA4twr)
 
 ::: {#fig-double-descent}
 
