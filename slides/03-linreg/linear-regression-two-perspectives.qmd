@@ -1,0 +1,278 @@
+---
+title: "Linear Regression: Two Perspectives (Inference vs Supervised Learning)"
+subtitle: "Biostat 212A"
+author: "Dr. Jin Zhou @ UCLA"
+date: today
+format:
+  html:
+    theme: cosmo
+    embed-resources: true
+    number-sections: true
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    code-fold: false
+engine: knitr
+knitr:
+  opts_chunk: 
+    fig.align: 'center'
+    # fig.width: 6
+    # fig.height: 4
+    message: FALSE
+    cache: false
+---
+
+## Linear regression as a **statistical (inference) tool**
+
+### Core goal
+Explain **relationships** and quantify **uncertainty** about those relationships.
+
+### Model and estimand
+Assume a data-generating model:
+
+$$Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \varepsilon$$
+
+- Target: the coefficients $\beta_j$ (associations/effects “holding others fixed”).
+- Output: estimates $\hat\beta$ plus standard errors, confidence intervals, and hypothesis tests.
+
+### What you typically report
+- Coefficient table: $\hat\beta_j$, SE, 95% CI, p-values
+- Global summaries: overall F-test, (adjusted) $R^2$
+- Diagnostics: residual checks, leverage/influence
+
+### Valid assumptions (so CI/p-values mean what we think)
+These are the assumptions behind *classical* OLS inference (t-tests, F-tests, standard CIs).
+
+#### A. Mean structure and exogeneity (bias / interpretation)
+1. **Correct mean model (linearity in parameters)**
+
+   $$E(Y\mid X) = \beta_0 + \sum_{j=1}^p \beta_j X_j$$
+
+   If the true mean needs nonlinear terms or interactions that are missing, the coefficients may not represent the intended “holding-others-fixed” comparisons.
+
+2. **Exogeneity / no unmeasured confounding**
+
+   $$E(\varepsilon\mid X)=0$$
+
+   Intuition: after controlling for included predictors, the remaining error is unrelated to the predictors. This is the key condition for interpreting $\beta_j$ as an “effect” rather than a distorted association.
+
+#### B. Error structure (standard errors and tests)
+3. **Independence** (given $X$)
+
+   Errors/observations are independent (no clustering, repeated measures dependence, or time-series correlation) *or* you explicitly account for dependence (e.g., cluster-robust SE, mixed models, time-series methods).
+
+4. **Constant variance (homoskedasticity)**
+
+   $$\mathrm{Var}(\varepsilon\mid X)=\sigma^2$$
+
+   If variance changes with predictors (heteroskedasticity), the usual (non-robust) SEs and p-values can be wrong; robust SEs fix inference without changing $\hat\beta$.
+
+5. **Normal errors (mainly for small-sample exact inference)**
+
+   $$\varepsilon\mid X \sim N(0,\sigma^2)$$
+
+   Needed for exact finite-sample t/F results. With large $n$, inference is often approximately valid without strict normality (but outliers/heavy tails can still matter).
+
+#### C. Design / identifiability conditions
+6. **No perfect multicollinearity / full rank design**
+
+   Predictors are not exact linear combinations of each other. Otherwise coefficients are not uniquely identifiable.
+
+7. **Correct specification of the unit of analysis**
+
+   Your model matches how the data were collected (random sampling vs convenience sample; repeated measures vs independent units). This shapes whether assumptions 3–5 are plausible.
+
+### Diagnostics you emphasize (quick checklist)
+- Residual vs fitted: nonlinearity, heteroskedasticity
+- QQ plot / residual distribution: normality (especially small samples)
+- Leverage/influence: hat values, Cook’s distance
+- Collinearity: large SEs, unstable coefficient estimates
+
+### Typical workflow
+1. Specify predictors based on the scientific question/design
+2. Fit OLS
+3. Interpret coefficients with CIs (and p-values cautiously)
+4. Check assumptions/diagnostics
+5. Refine model (transformations, interactions) or use robust methods
+
+### Common failure modes
+- Omitted variable bias (violates exogeneity)
+- Dependence ignored (SE too small)
+- Heteroskedasticity ignored (SE/p-values unreliable)
+- Model fishing / multiple testing (inflated false positives)
+
+
+## Linear regression as a **supervised learning (prediction) tool**
+
+
+
+We observe training data
+
+$$
+\{(x_i, y_i)\}_{i=1}^n,
+$$
+
+where $x_i \in \mathbb{R}^p$ are features (predictors) and $y_i \in \mathbb{R}$ is the response.
+
+**Goal:** learn a prediction rule $f$ so that for a new input $x$, the prediction $\hat y = f(x)$ is accurate.
+
+---
+
+### 1. Start with a loss function
+
+A **loss function** measures how bad a prediction is:
+
+$$
+L\big(y, f(x)\big).
+$$
+
+Learning is framed as choosing a function $f$ that minimizes *average loss*.
+
+### Empirical risk (training objective)
+
+In practice we minimize the **empirical risk** (average training loss):
+
+$$
+\hat R(f) = \frac{1}{n}\sum_{i=1}^n L\big(y_i, f(x_i)\big).
+$$
+
+So the supervised learning problem is
+
+$$
+\hat f = \arg\min_{f\in\mathcal{F}} \hat R(f),
+$$
+
+where $\mathcal{F}$ is the set (class) of functions we allow.
+
+---
+
+### 2. Choose squared loss (regression)
+
+For regression, a common choice is **squared loss**:
+
+$$
+L(y, \hat y) = (y-\hat y)^2.
+$$
+
+Then empirical risk becomes the **mean squared error (MSE)** on the training set:
+
+$$
+\hat R(f) = \frac{1}{n}\sum_{i=1}^n \big(y_i - f(x_i)\big)^2.
+$$
+
+---
+
+### 3. Choose a function class: linear functions
+
+Now restrict to **linear predictors**:
+
+$$
+\mathcal{F} = \{ f_{\beta}(x) = \beta_0 + x^\top\beta \},
+$$
+
+where
+
+- $\beta_0$ is the intercept,
+- $\beta \in \mathbb{R}^p$ are the coefficients.
+
+(Equivalently, you can augment $x$ with a leading 1 and write $f_{\theta}(x)=\tilde x^\top\theta$.)
+
+---
+
+### 4. Put it together: linear regression (OLS)
+
+Plug squared loss and linear functions into the empirical risk minimization objective:
+
+$$
+(\hat\beta_0, \hat\beta)
+= \arg\min_{\beta_0,\beta}
+\frac{1}{n}\sum_{i=1}^n \Big(y_i - (\beta_0 + x_i^\top\beta)\Big)^2.
+$$
+
+This optimization problem is **ordinary least squares (OLS)**, i.e., **linear regression**.
+
+---
+
+### 5. Matrix form
+
+Let $X \in \mathbb{R}^{n\times (p+1)}$ include a column of ones (for the intercept), $y\in\mathbb{R}^n$, and $\beta\in\mathbb{R}^{p+1}$.
+
+Then the objective can be written compactly as
+
+$$
+\hat\beta = \arg\min_{\beta} \|y - X\beta\|_2^2.
+$$
+
+---
+
+### 6. Solution: normal equations and closed form
+
+Taking derivatives and setting them to zero yields the **normal equations**:
+
+$$
+X^\top X\,\hat\beta = X^\top y.
+$$
+
+If $X^\top X$ is invertible,
+
+$$
+\hat\beta = (X^\top X)^{-1}X^\top y.
+$$
+
+Predictions on the training inputs are
+
+$$
+\hat y = X\hat\beta,
+$$
+
+and for a new input $x$,
+
+$$
+\hat y(x) = \hat\beta_0 + x^\top\hat\beta.
+$$
+
+---
+
+### 7. Geometric interpretation (one-line)
+
+OLS predictions $\hat y$ are the **orthogonal projection of $y$ onto the column space of $X$**.
+
+---
+
+### 8. Why this is “supervised learning”
+
+In the supervised learning view:
+
+- Coefficients are mainly a **means to an end**: produce a predictor $\hat f$.
+- The main criterion is **generalization** (performance on new data), not p-values.
+
+### Evaluate with held-out data
+
+- Use a **train/test split** or **cross-validation**.
+- Report predictive metrics such as **RMSE** or **MAE** on held-out data.
+
+---
+
+### 9. Natural next step: regularization (optional)
+
+Same squared-loss + linear function class, but add a penalty to improve generalization when predictors are many or collinear.
+
+### Ridge regression
+
+$$
+\min_{\beta}\ \|y - X\beta\|_2^2 + \lambda\|\beta\|_2^2.
+$$
+
+### Lasso regression
+
+$$
+\min_{\beta}\ \|y - X\beta\|_2^2 + \lambda\|\beta\|_1.
+$$
+
+Choose $\lambda$ using cross-validation.
+
+
+## Bottom line
+Same fitted form, different purpose:
+- **Inference** asks: “What is $\beta_j$ and how uncertain are we?” (assumptions + diagnostics matter)
+- **Supervised learning** asks: “How small is the **test error**?” (CV/holdout + regularization matter)
