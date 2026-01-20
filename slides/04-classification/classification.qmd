@@ -354,6 +354,62 @@ $$
 \ell(\beta_0, \ldots, \beta_p) = \prod_{i:y_i=1} p(x_i) \prod_{i: y_i = 0} [1 - p(x_i)].
 $$
 
+### Optimization for logistic regression (how we actually fit it)
+
+**Model**
+
+- Linear score: $\eta_i = x_i^\top \beta$
+
+- Probability: $p_i = g^{-1}(\eta_i) = \dfrac{1}{1+e^{-\eta_i}}$
+
+**Loss / objective (cross-entropy = negative log-likelihood)**
+$$
+\mathcal{L}(\beta)
+= -\sum_{i=1}^n \Big[ y_i \log(p_i) + (1-y_i)\log(1-p_i) \Big]
+$$
+
+- Unlike OLS, minimizing $\mathcal{L}(\beta)$ has **no closed-form solution** → we use iterative optimization.
+
+**Gradient + Hessian (what the optimizer uses)**
+Let $p=(p_1,\dots,p_n)^\top$.
+$$
+\nabla \mathcal{L}(\beta) = X^\top(p - y)
+$$
+$$
+\nabla^2 \mathcal{L}(\beta) = X^\top W X,\quad
+W=\mathrm{diag}\big(p_i(1-p_i)\big)
+$$
+
+- $\mathcal{L}(\beta)$ is convex ⇒ unique global minimum (when not separable).
+
+**Newton / IRLS update (most common in practice)**
+Newton step:
+$$
+\beta^{(t+1)} = \beta^{(t)} - \left(X^\top W X\right)^{-1} X^\top(p-y)
+$$
+Equivalent **IRLS** (Iteratively Reweighted Least Squares) view:
+1. Compute $p^{(t)}=\sigma(X\beta^{(t)})$ and $W^{(t)}=\mathrm{diag}(p_i^{(t)}(1-p_i^{(t)}))$
+2. Form the “working response”
+   $$
+   z^{(t)} = X\beta^{(t)} + \left(W^{(t)}\right)^{-1}(y - p^{(t)})
+   $$
+3. Solve weighted least squares
+  $$
+   \beta^{(t+1)} = \arg\min_\beta \ \| W^{(t)1/2}(z^{(t)} - X\beta)\|_2^2
+   $$
+4. Repeat until convergence (e.g., change in $\beta$ or $\mathcal{L}(\beta)$ is tiny)
+
+**Practical notes**
+
+- If classes are (quasi-)separable, coefficients can blow up → use regularization (e.g., ridge / lasso) or priors.
+
+- With regularization (ridge):
+  $$
+  \min_\beta \ \mathcal{L}(\beta) + \lambda\|\beta\|_2^2
+  $$
+  (same iterative idea, slightly modified updates)
+
+
 ::: {.panel-tabset}
 
 #### R
