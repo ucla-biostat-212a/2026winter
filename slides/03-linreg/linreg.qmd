@@ -466,7 +466,7 @@ lmod.summary()
 
 ## Interpreting regression coefficients
 
-- We interpret $\beta_j$ as the average effect on $Y$ of a a one-unit increase in $X_j$, _holding all other predictors fixed_. 
+- We interpret $\beta_j$ as the average effect on $Y$ of a one-unit increase in $X_j$, _holding all other predictors fixed_. 
 
 > a regression coefficient $\beta_j$ estimates the expected change in $Y$ per unit change in $X_j$, with all other predictors held fixed. But predictors usually change together!
 > 

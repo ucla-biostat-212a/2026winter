@@ -30,7 +30,9 @@ Explain **relationships** and quantify **uncertainty** about those relationships
 ### Model and estimand
 Assume a data-generating model:
 
-$$Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \varepsilon$$
+$$
+Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \varepsilon
+$$
 
 - Target: the coefficients $\beta_j$ (associations/effects “holding others fixed”).
 - Output: estimates $\hat\beta$ plus standard errors, confidence intervals, and hypothesis tests.
@@ -43,7 +45,7 @@ $$Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \varepsilon$$
 ### Valid assumptions (so CI/p-values mean what we think)
 These are the assumptions behind *classical* OLS inference (t-tests, F-tests, standard CIs).
 
-#### A. Mean structure and exogeneity (bias / interpretation)
+#### Mean structure and exogeneity (bias / interpretation)
 1. **Correct mean model (linearity in parameters)**
 
    $$E(Y\mid X) = \beta_0 + \sum_{j=1}^p \beta_j X_j$$
@@ -52,11 +54,12 @@ These are the assumptions behind *classical* OLS inference (t-tests, F-tests, st
 
 2. **Exogeneity / no unmeasured confounding**
 
-   $$E(\varepsilon\mid X)=0$$
+   $$
+   E(\varepsilon\mid X)=0$$
 
    Intuition: after controlling for included predictors, the remaining error is unrelated to the predictors. This is the key condition for interpreting $\beta_j$ as an “effect” rather than a distorted association.
 
-#### B. Error structure (standard errors and tests)
+#### Error structure (standard errors and tests)
 3. **Independence** (given $X$)
 
    Errors/observations are independent (no clustering, repeated measures dependence, or time-series correlation) *or* you explicitly account for dependence (e.g., cluster-robust SE, mixed models, time-series methods).
@@ -73,7 +76,7 @@ These are the assumptions behind *classical* OLS inference (t-tests, F-tests, st
 
    Needed for exact finite-sample t/F results. With large $n$, inference is often approximately valid without strict normality (but outliers/heavy tails can still matter).
 
-#### C. Design / identifiability conditions
+#### Design / identifiability conditions
 6. **No perfect multicollinearity / full rank design**
 
    Predictors are not exact linear combinations of each other. Otherwise coefficients are not uniquely identifiable.
