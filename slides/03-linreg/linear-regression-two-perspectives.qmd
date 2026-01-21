@@ -274,5 +274,7 @@ Choose $\lambda$ using cross-validation.
 
 ## Bottom line
 Same fitted form, different purpose:
-- **Inference** asks: “What is $\beta_j$ and how uncertain are we?” (assumptions + diagnostics matter)
-- **Supervised learning** asks: “How small is the **test error**?” (CV/holdout + regularization matter)
+
+- **Inference** asks: "What is $\beta_j$ and how uncertain are we?" (assumptions + diagnostics matter)
+
+- **Supervised learning** asks: "How small is the **test error**?" (CV/holdout + regularization matter)
