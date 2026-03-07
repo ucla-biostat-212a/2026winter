@@ -2357,12 +2357,13 @@ window.Quarto = {
   <li><a href="#principal-components-analysis-pca" id="toc-principal-components-analysis-pca" class="nav-link" data-scroll-target="#principal-components-analysis-pca"><span class="header-section-number">2</span> Principal Components Analysis (PCA)</a>
   <ul>
   <li><a href="#computation-of-pcs" id="toc-computation-of-pcs" class="nav-link" data-scroll-target="#computation-of-pcs"><span class="header-section-number">2.1</span> Computation of PCs</a></li>
-  <li><a href="#geometry-of-pca" id="toc-geometry-of-pca" class="nav-link" data-scroll-target="#geometry-of-pca"><span class="header-section-number">2.2</span> Geometry of PCA</a></li>
-  <li><a href="#futher-pcs" id="toc-futher-pcs" class="nav-link" data-scroll-target="#futher-pcs"><span class="header-section-number">2.3</span> Futher PCs</a></li>
-  <li><a href="#usaarrests-data" id="toc-usaarrests-data" class="nav-link" data-scroll-target="#usaarrests-data"><span class="header-section-number">2.4</span> <code>USAarrests</code> data</a></li>
-  <li><a href="#pca-find-the-hyperplane-closest-to-the-observations" id="toc-pca-find-the-hyperplane-closest-to-the-observations" class="nav-link" data-scroll-target="#pca-find-the-hyperplane-closest-to-the-observations"><span class="header-section-number">2.5</span> PCA find the hyperplane closest to the observations</a></li>
-  <li><a href="#scaling" id="toc-scaling" class="nav-link" data-scroll-target="#scaling"><span class="header-section-number">2.6</span> Scaling</a></li>
-  <li><a href="#proportion-variance-explained-pve" id="toc-proportion-variance-explained-pve" class="nav-link" data-scroll-target="#proportion-variance-explained-pve"><span class="header-section-number">2.7</span> Proportion variance explained (PVE)</a></li>
+  <li><a href="#matrixvector-form-of-pca" id="toc-matrixvector-form-of-pca" class="nav-link" data-scroll-target="#matrixvector-form-of-pca"><span class="header-section-number">2.2</span> Matrix/vector form of PCA</a></li>
+  <li><a href="#geometry-of-pca" id="toc-geometry-of-pca" class="nav-link" data-scroll-target="#geometry-of-pca"><span class="header-section-number">2.3</span> Geometry of PCA</a></li>
+  <li><a href="#further-pcs" id="toc-further-pcs" class="nav-link" data-scroll-target="#further-pcs"><span class="header-section-number">2.4</span> Further PCs</a></li>
+  <li><a href="#usaarrests-data" id="toc-usaarrests-data" class="nav-link" data-scroll-target="#usaarrests-data"><span class="header-section-number">2.5</span> <code>USAarrests</code> data</a></li>
+  <li><a href="#pca-find-the-hyperplane-closest-to-the-observations" id="toc-pca-find-the-hyperplane-closest-to-the-observations" class="nav-link" data-scroll-target="#pca-find-the-hyperplane-closest-to-the-observations"><span class="header-section-number">2.6</span> PCA find the hyperplane closest to the observations</a></li>
+  <li><a href="#scaling" id="toc-scaling" class="nav-link" data-scroll-target="#scaling"><span class="header-section-number">2.7</span> Scaling</a></li>
+  <li><a href="#proportion-variance-explained-pve" id="toc-proportion-variance-explained-pve" class="nav-link" data-scroll-target="#proportion-variance-explained-pve"><span class="header-section-number">2.8</span> Proportion variance explained (PVE)</a></li>
   </ul></li>
   <li><a href="#umap" id="toc-umap" class="nav-link" data-scroll-target="#umap"><span class="header-section-number">3</span> UMAP</a>
   <ul>
@@ -2395,7 +2396,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Unsupervised Learning (ISL 12)</h1>
-<p class="subtitle lead">Biotat 212A</p>
+<p class="subtitle lead">Biostat 212A</p>
 </div>
 
 
@@ -2569,15 +2570,83 @@ z_{i1} = \phi_{11} x_{i1} + \phi_{21} x_{i2} + \cdots + \phi_{p1} x_{ip}
 <li><p>We refer to <span class="math inline">\(Z_1\)</span> as the first principal component, with realized values <span class="math inline">\(z_{11}, \ldots, z_{n1}\)</span>.</p></li>
 </ul>
 </section>
-<section id="geometry-of-pca" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="geometry-of-pca"><span class="header-section-number">2.2</span> Geometry of PCA</h3>
+<section id="matrixvector-form-of-pca" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="matrixvector-form-of-pca"><span class="header-section-number">2.2</span> Matrix/vector form of PCA</h3>
+<p>The element-wise formulation above is the same as the following matrix/vector version, which is more compact and connects directly to standard linear algebra tools.</p>
+<p><strong>Translating the score formula.</strong> The scalar formula <span class="math inline">\(z_{i1} = \sum_{j=1}^p \phi_{j1} x_{ij}\)</span> for all <span class="math inline">\(i = 1,\ldots,n\)</span> simultaneously is just a matrix-vector product. Stack all scores into a vector and write:</p>
+<p><span class="math display">\[
+\mathbf{z}_1 = \boldsymbol{X} \boldsymbol{\phi}_1,
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(n \times p\)</span> (centered), <span class="math inline">\(\boldsymbol{\phi}_1\)</span> is <span class="math inline">\(p \times 1\)</span>, and <span class="math inline">\(\mathbf{z}_1\)</span> is the <span class="math inline">\(n \times 1\)</span> vector of scores <span class="math inline">\((z_{11}, \ldots, z_{n1})^T\)</span>.</p>
+<p><strong>Translating the optimization.</strong> The sample variance of the scores is</p>
+<p><span class="math display">\[
+\frac{1}{n}\sum_{i=1}^n z_{i1}^2 = \frac{1}{n}\mathbf{z}_1^T \mathbf{z}_1 = \frac{1}{n}\boldsymbol{\phi}_1^T \boldsymbol{X}^T \boldsymbol{X} \boldsymbol{\phi}_1 = \boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1,
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{S} = \frac{1}{n}\boldsymbol{X}^T \boldsymbol{X}\)</span> is the <span class="math inline">\(p \times p\)</span> sample covariance matrix (recall that <span class="math inline">\(\boldsymbol{X}\)</span> is already centered). The unit-norm constraint <span class="math inline">\(\sum_j \phi_{j1}^2 = 1\)</span> becomes <span class="math inline">\(\boldsymbol{\phi}_1^T \boldsymbol{\phi}_1 = 1\)</span>.</p>
+<p>So the scalar optimization problem is, in matrix form:</p>
+<p><span class="math display">\[
+\max_{\boldsymbol{\phi}_1} \; \boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1 \quad \text{subject to} \quad \boldsymbol{\phi}_1^T \boldsymbol{\phi}_1 = 1.
+\]</span></p>
+<p><strong>Connection to eigenvalues.</strong> Using a Lagrange multiplier <span class="math inline">\(\lambda\)</span> for the constraint, the first-order condition is:</p>
+<p><span class="math display">\[
+\boldsymbol{S}\boldsymbol{\phi}_1 = \lambda \boldsymbol{\phi}_1.
+\]</span></p>
+<p>This says <span class="math inline">\(\boldsymbol{\phi}_1\)</span> must be an <strong>eigenvector</strong> of the covariance matrix <span class="math inline">\(\boldsymbol{S}\)</span>, with eigenvalue <span class="math inline">\(\lambda\)</span>. Since the objective at the solution is <span class="math inline">\(\boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1 = \lambda\)</span>, the maximum is achieved by choosing <span class="math inline">\(\boldsymbol{\phi}_1\)</span> as the eigenvector corresponding to the <strong>largest</strong> eigenvalue <span class="math inline">\(\lambda_1\)</span>. This eigenvalue <em>is</em> the variance of the first PC.</p>
+<p>Similarly, <span class="math inline">\(\boldsymbol{\phi}_2\)</span> is the eigenvector with the second-largest eigenvalue, and so on. In general, the <span class="math inline">\(m\)</span>th loading vector is the eigenvector of <span class="math inline">\(\boldsymbol{S}\)</span> with the <span class="math inline">\(m\)</span>th largest eigenvalue <span class="math inline">\(\lambda_m\)</span>, and <span class="math inline">\(\lambda_m\)</span> is the variance of the <span class="math inline">\(m\)</span>th PC.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Scalar version</th>
+<th>Matrix version</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Loading vectors</td>
+<td><span class="math inline">\(\phi_1, \phi_2, \ldots\)</span></td>
+<td>Eigenvectors of <span class="math inline">\(\boldsymbol{S}\)</span> (sorted by decreasing <span class="math inline">\(\lambda\)</span>)</td>
+</tr>
+<tr class="even">
+<td>Score vectors</td>
+<td><span class="math inline">\(z_{i1}, z_{i2}, \ldots\)</span></td>
+<td><span class="math inline">\(\mathbf{z}_m = \boldsymbol{X}\boldsymbol{\phi}_m\)</span></td>
+</tr>
+<tr class="odd">
+<td>Variance of <span class="math inline">\(m\)</span>-th PC</td>
+<td><span class="math inline">\(\frac{1}{n}\sum_i z_{im}^2\)</span></td>
+<td><span class="math inline">\(\lambda_m\)</span> (the <span class="math inline">\(m\)</span>th eigenvalue of <span class="math inline">\(\boldsymbol{S}\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Summary: PCA in one sentence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>PCA finds the eigenvectors of the sample covariance matrix <span class="math inline">\(\boldsymbol{S} = \frac{1}{n}\boldsymbol{X}^T\boldsymbol{X}\)</span>. The eigenvector with the largest eigenvalue is the first loading vector (the direction of maximum variance); the eigenvector with the second-largest eigenvalue is the second loading vector; and so on.</p>
+</div>
+</div>
+</section>
+<section id="geometry-of-pca" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="geometry-of-pca"><span class="header-section-number">2.3</span> Geometry of PCA</h3>
 <ul>
 <li><p>The loading vector <span class="math inline">\(\phi_1\)</span> with elements <span class="math inline">\(\phi_{11}, \phi_{21}\)</span>, , <span class="math inline">\(\phi_{p1}\)</span> defines a direction in feature space along which the data vary the most.</p></li>
 <li><p>If we project the <span class="math inline">\(n\)</span> data points <span class="math inline">\(x_1, \ldots, x_n\)</span> onto this direction, the projected values are the principal component scores <span class="math inline">\(z_{11},\ldots,z_{n1}\)</span> themselves.</p></li>
 </ul>
 </section>
-<section id="futher-pcs" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="futher-pcs"><span class="header-section-number">2.3</span> Futher PCs</h3>
+<section id="further-pcs" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="further-pcs"><span class="header-section-number">2.4</span> Further PCs</h3>
 <ul>
 <li><p>The second principal component is the linear combination of <span class="math inline">\(X_1, \ldots, X_p\)</span> that has maximal variance among all linear combinations that are <strong>uncorrelated</strong> with <span class="math inline">\(Z_1\)</span>.</p></li>
 <li><p>The second principal component scores <span class="math inline">\(z_{12}, z_{22}, \ldots, z_{n2}\)</span> take the form <span class="math display">\[
@@ -2585,10 +2654,15 @@ z_{i2} = \phi_{12} x_{i1} + \phi_{22} x_{i2} + \cdots + \phi_{p2} x_{ip},
 \]</span> where <span class="math inline">\(\phi_2\)</span> is the second principal component loading vector, with elements <span class="math inline">\(\phi_{12}, \phi_{22}, \ldots , \phi_{p2}\)</span>.</p></li>
 <li><p>It turns out that constraining <span class="math inline">\(Z_2\)</span> to be uncorrelated with <span class="math inline">\(Z_1\)</span> is equivalent to constraining the direction <span class="math inline">\(\phi_2\)</span> to be orthogonal (perpendicular) to the direction <span class="math inline">\(\phi_1\)</span>. And so on.</p></li>
 <li><p>The principal component directions <span class="math inline">\(\phi_1, \phi_2, \phi_3, \ldots\)</span> are the ordered sequence of right singular vectors of the matrix <span class="math inline">\(\boldsymbol{X}\)</span>, and the variances of the components are <span class="math inline">\(\frac{1}{n}\)</span> times the squares of the singular values. There are at most <span class="math inline">\(\min(n − 1, p)\)</span> principal components.</p></li>
+<li><p><strong>In matrix form</strong>: if we want the first <span class="math inline">\(M\)</span> principal components, we collect the loading vectors as columns of a <span class="math inline">\(p \times M\)</span> matrix <span class="math inline">\(\boldsymbol{\Phi}_M = [\boldsymbol{\phi}_1 \mid \cdots \mid \boldsymbol{\phi}_M]\)</span> and write all scores at once as</p></li>
 </ul>
+<p><span class="math display">\[
+\boldsymbol{Z}_{n \times M} = \boldsymbol{X}_{n \times p} \, \boldsymbol{\Phi}_{p \times M}.
+\]</span></p>
+<p>This is a projection of the data from <span class="math inline">\(p\)</span> dimensions down to <span class="math inline">\(M\)</span> dimensions. The columns of <span class="math inline">\(\boldsymbol{Z}\)</span> are exactly the score vectors <span class="math inline">\(\mathbf{z}_1, \ldots, \mathbf{z}_M\)</span>, and they are mutually uncorrelated because the eigenvectors of <span class="math inline">\(\boldsymbol{S}\)</span> are orthogonal.</p>
 </section>
-<section id="usaarrests-data" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="usaarrests-data"><span class="header-section-number">2.4</span> <code>USAarrests</code> data</h3>
+<section id="usaarrests-data" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="usaarrests-data"><span class="header-section-number">2.5</span> <code>USAarrests</code> data</h3>
 <ul>
 <li><p>For each of the fifty states in the United States, the data set contains the number of arrests per 100,000 residents for each of three crimes: <code>Assault</code>, <code>Murder</code>, and <code>Rape</code>. We also record <code>UrbanPop</code> (the percent of the population in each state living in urban areas).</p></li>
 <li><p>The principal component score vectors have length <span class="math inline">\(n = 50\)</span>, and the principal component loading vectors have length <span class="math inline">\(p = 4\)</span>.</p></li>
@@ -2641,8 +2715,8 @@ Figure 2: The blue state names represent the scores for the first two principal
 </tbody>
 </table>
 </section>
-<section id="pca-find-the-hyperplane-closest-to-the-observations" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="pca-find-the-hyperplane-closest-to-the-observations"><span class="header-section-number">2.5</span> PCA find the hyperplane closest to the observations</h3>
+<section id="pca-find-the-hyperplane-closest-to-the-observations" class="level3" data-number="2.6">
+<h3 data-number="2.6" class="anchored" data-anchor-id="pca-find-the-hyperplane-closest-to-the-observations"><span class="header-section-number">2.6</span> PCA find the hyperplane closest to the observations</h3>
 <div id="fig-advertising-pc-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-advertising-pc-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -2661,8 +2735,8 @@ Figure 3: Ninety observations simulated in three dimensions. The observations a
 <li><p>For instance, the first two principal components of a data set span the plane that is closest to the <span class="math inline">\(n\)</span> observations, in terms of average squared Euclidean distance.</p></li>
 </ul>
 </section>
-<section id="scaling" class="level3" data-number="2.6">
-<h3 data-number="2.6" class="anchored" data-anchor-id="scaling"><span class="header-section-number">2.6</span> Scaling</h3>
+<section id="scaling" class="level3" data-number="2.7">
+<h3 data-number="2.7" class="anchored" data-anchor-id="scaling"><span class="header-section-number">2.7</span> Scaling</h3>
 <ul>
 <li><p>If the variables are in different units, scaling each to have standard deviation equal to one is recommended.</p></li>
 <li><p>If they are in the same units, you might or might not scale the variables.</p></li>
@@ -2680,8 +2754,8 @@ Figure 4: Two principal component biplots for the USArrests data.
 </figure>
 </div>
 </section>
-<section id="proportion-variance-explained-pve" class="level3" data-number="2.7">
-<h3 data-number="2.7" class="anchored" data-anchor-id="proportion-variance-explained-pve"><span class="header-section-number">2.7</span> Proportion variance explained (PVE)</h3>
+<section id="proportion-variance-explained-pve" class="level3" data-number="2.8">
+<h3 data-number="2.8" class="anchored" data-anchor-id="proportion-variance-explained-pve"><span class="header-section-number">2.8</span> Proportion variance explained (PVE)</h3>
 <ul>
 <li><p>To understand the strength of each component, we are interested in knowing the proportion of variance explained (PVE) by each one.</p></li>
 <li><p>The <strong>total variance</strong> present in a data set (assuming that the variables have been centered to have mean zero) is defined as <span class="math display">\[
@@ -2695,6 +2769,9 @@ Figure 4: Two principal component biplots for the USArrests data.
 <li><p>Therefore, the PVE of the <span class="math inline">\(m\)</span>th principal component is given by the positive quantity between 0 and 1 <span class="math display">\[
 \frac{\sum_{i=1}^n z_{im}^2}{\sum_{j=1}^p \sum_{i=1}^n x_{ij}^2}.
 \]</span></p></li>
+<li><p><strong>In terms of eigenvalues</strong>: since <span class="math inline">\(\text{Var}(Z_m) = \lambda_m\)</span> (the <span class="math inline">\(m\)</span>th eigenvalue of <span class="math inline">\(\boldsymbol{S}\)</span>) and the total variance is <span class="math inline">\(\sum_m \lambda_m\)</span>, the PVE simplifies to <span class="math display">\[
+\text{PVE}_m = \frac{\lambda_m}{\sum_{m&#39;=1}^{M} \lambda_{m&#39;}}.
+\]</span> Larger eigenvalue = more variance explained by that component.</p></li>
 <li><p>The PVEs sum to one. We sometimes display the cumulative PVEs.</p></li>
 </ul>
 <div id="fig-usaarrest-PVE" class="quarto-float quarto-figure quarto-figure-center anchored">
