@@ -640,7 +640,7 @@ Results from random forests for the fifteen-class gene expression data set with 
 - Always monitor validation loss (or CV) as $B$ increases.
 :::
 
-<iframe src="boosting_viz.html" width="100%" height="820" style="border: none; border-radius: 8px;"></iframe>
+<iframe src="boosting_viz.html" width="100%" height="1020" style="border: none; border-radius: 8px;"></iframe>
 
 ## Modern boosted-tree implementations
 

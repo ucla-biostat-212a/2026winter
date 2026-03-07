@@ -1,6 +1,6 @@
 ---
 title: "Unsupervised Learning (ISL 12)"
-subtitle: "Biotat 212A"
+subtitle: "Biostat 212A"
 author: "Dr. Jin Zhou @ UCLA"
 date: today
 format:
@@ -138,13 +138,61 @@ $$
 
 - We refer to $Z_1$ as the first principal component, with realized values $z_{11}, \ldots, z_{n1}$. 
 
+### Matrix/vector form of PCA
+
+The element-wise formulation above is the same as the following matrix/vector version, which is more compact and connects directly to standard linear algebra tools.
+
+**Translating the score formula.** The scalar formula $z_{i1} = \sum_{j=1}^p \phi_{j1} x_{ij}$ for all $i = 1,\ldots,n$ simultaneously is just a matrix-vector product. Stack all scores into a vector and write:
+
+$$
+\mathbf{z}_1 = \boldsymbol{X} \boldsymbol{\phi}_1,
+$$
+
+where $\boldsymbol{X}$ is $n \times p$ (centered), $\boldsymbol{\phi}_1$ is $p \times 1$, and $\mathbf{z}_1$ is the $n \times 1$ vector of scores $(z_{11}, \ldots, z_{n1})^T$.
+
+**Translating the optimization.** The sample variance of the scores is
+
+$$
+\frac{1}{n}\sum_{i=1}^n z_{i1}^2 = \frac{1}{n}\mathbf{z}_1^T \mathbf{z}_1 = \frac{1}{n}\boldsymbol{\phi}_1^T \boldsymbol{X}^T \boldsymbol{X} \boldsymbol{\phi}_1 = \boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1,
+$$
+
+where $\boldsymbol{S} = \frac{1}{n}\boldsymbol{X}^T \boldsymbol{X}$ is the $p \times p$ sample covariance matrix (recall that $\boldsymbol{X}$ is already centered). The unit-norm constraint $\sum_j \phi_{j1}^2 = 1$ becomes $\boldsymbol{\phi}_1^T \boldsymbol{\phi}_1 = 1$.
+
+So the scalar optimization problem is, in matrix form:
+
+$$
+\max_{\boldsymbol{\phi}_1} \; \boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1 \quad \text{subject to} \quad \boldsymbol{\phi}_1^T \boldsymbol{\phi}_1 = 1.
+$$
+
+**Connection to eigenvalues.** Using a Lagrange multiplier $\lambda$ for the constraint, the first-order condition is:
+
+$$
+\boldsymbol{S}\boldsymbol{\phi}_1 = \lambda \boldsymbol{\phi}_1.
+$$
+
+This says $\boldsymbol{\phi}_1$ must be an **eigenvector** of the covariance matrix $\boldsymbol{S}$, with eigenvalue $\lambda$. Since the objective at the solution is $\boldsymbol{\phi}_1^T \boldsymbol{S} \boldsymbol{\phi}_1 = \lambda$, the maximum is achieved by choosing $\boldsymbol{\phi}_1$ as the eigenvector corresponding to the **largest** eigenvalue $\lambda_1$. This eigenvalue *is* the variance of the first PC.
+
+Similarly, $\boldsymbol{\phi}_2$ is the eigenvector with the second-largest eigenvalue, and so on. In general, the $m$th loading vector is the eigenvector of $\boldsymbol{S}$ with the $m$th largest eigenvalue $\lambda_m$, and $\lambda_m$ is the variance of the $m$th PC.
+
+| Object | Scalar version | Matrix version |
+|---|---|---|
+| Loading vectors | $\phi_1, \phi_2, \ldots$ | Eigenvectors of $\boldsymbol{S}$ (sorted by decreasing $\lambda$) |
+| Score vectors | $z_{i1}, z_{i2}, \ldots$ | $\mathbf{z}_m = \boldsymbol{X}\boldsymbol{\phi}_m$ |
+| Variance of $m$-th PC | $\frac{1}{n}\sum_i z_{im}^2$ | $\lambda_m$ (the $m$th eigenvalue of $\boldsymbol{S}$) |
+
+::: {.callout-note appearance="minimal"}
+### Summary: PCA in one sentence
+
+PCA finds the eigenvectors of the sample covariance matrix $\boldsymbol{S} = \frac{1}{n}\boldsymbol{X}^T\boldsymbol{X}$. The eigenvector with the largest eigenvalue is the first loading vector (the direction of maximum variance); the eigenvector with the second-largest eigenvalue is the second loading vector; and so on.
+:::
+
 ### Geometry of PCA
 
 - The loading vector $\phi_1$ with elements $\phi_{11}, \phi_{21}$, \ldots, $\phi_{p1}$ defines a direction in feature space along which the data vary the most.
 
 - If we project the $n$ data points $x_1, \ldots, x_n$ onto this direction, the projected values are the principal component scores $z_{11},\ldots,z_{n1}$ themselves.
 
-### Futher PCs
+### Further PCs
 
 - The second principal component is the linear combination of $X_1, \ldots, X_p$ that has maximal variance among all linear combinations that are **uncorrelated** with $Z_1$.
 
@@ -157,6 +205,14 @@ where $\phi_2$ is the second principal component loading vector, with elements $
 - It turns out that constraining $Z_2$ to be uncorrelated with $Z_1$ is equivalent to constraining the direction $\phi_2$ to be orthogonal (perpendicular) to the direction $\phi_1$. And so on.
 
 - The principal component directions $\phi_1, \phi_2, \phi_3, \ldots$ are the ordered sequence of right singular vectors of the matrix $\boldsymbol{X}$, and the variances of the components are $\frac{1}{n}$ times the squares of the singular values. There are at most $\min(n − 1, p)$ principal components.
+
+- **In matrix form**: if we want the first $M$ principal components, we collect the loading vectors as columns of a $p \times M$ matrix $\boldsymbol{\Phi}_M = [\boldsymbol{\phi}_1 \mid \cdots \mid \boldsymbol{\phi}_M]$ and write all scores at once as
+
+$$
+\boldsymbol{Z}_{n \times M} = \boldsymbol{X}_{n \times p} \, \boldsymbol{\Phi}_{p \times M}.
+$$
+
+This is a projection of the data from $p$ dimensions down to $M$ dimensions. The columns of $\boldsymbol{Z}$ are exactly the score vectors $\mathbf{z}_1, \ldots, \mathbf{z}_M$, and they are mutually uncorrelated because the eigenvectors of $\boldsymbol{S}$ are orthogonal.
 
 ### `USAarrests` data
 
@@ -244,6 +300,12 @@ with $M = \min(n-1, p)$.
 $$
 \frac{\sum_{i=1}^n z_{im}^2}{\sum_{j=1}^p \sum_{i=1}^n x_{ij}^2}.
 $$
+
+- **In terms of eigenvalues**: since $\text{Var}(Z_m) = \lambda_m$ (the $m$th eigenvalue of $\boldsymbol{S}$) and the total variance is $\sum_m \lambda_m$, the PVE simplifies to
+$$
+\text{PVE}_m = \frac{\lambda_m}{\sum_{m'=1}^{M} \lambda_{m'}}.
+$$
+Larger eigenvalue = more variance explained by that component.
 
 - The PVEs sum to one. We sometimes display the cumulative PVEs.
 
