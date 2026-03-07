@@ -187,7 +187,7 @@ list(zip(feat_names[top_idx], np.round(perm.importances_mean[top_idx], 2)))
 
 # SHAP: local explanations that add up
 
-## The idea in 60 seconds
+## The idea 
 
 Permutation importance gives one number per feature (global). **SHAP** gives one number per feature **per observation** (local). For a single prediction:
 
